@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Text List</h1>
+  {% if text_list %}
+     <ul>
+       {% for text in text_list %}
+          <li> <b>{{ text.title }}</b> ({{text.author}}) </li>
+       {% endfor %}
+     </ul>
+  {% else %}
+     <p>There are no texts in the site.</p>
+  {% endif %}
+{% endblock %}

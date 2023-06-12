@@ -1,0 +1,11 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Home/</h1>
+  <p>Welcome to the collaborative translator</p>
+  <h2>Currently, this is what the site holds:</h2>
+  <ul>
+      <li><strong>Texts:</strong> {{ num_texts }}</li>
+      <li><strong>Authors:</strong> {{ num_authors }}</li>
+  </ul>
+{% endblock %}
