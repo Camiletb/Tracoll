@@ -42,8 +42,7 @@ class Author(models.Model):
 
     #type = models.CharField(max_length=2, choices=type_choices, default=SINGER)
     type = models.ForeignKey(AuthorType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of author")
-
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,  help_text="Enter the name of author")
     
     class Meta:
         ordering = ['name']
@@ -98,6 +97,10 @@ class Text(models.Model):
     class Meta:
         ordering = ['title']
 
+    def author(self): 
+        #tengo que hacer estos getters para poder acceder a estas variables que no son propias cuando trabajo con los inlines
+        return ", ".join([author.name for author in self.authors.all()])
+
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.authors.all()])
         return f'{self.title}, {print_authors} [{self.state}]'
@@ -117,6 +120,9 @@ class Translation(models.Model):
     class Meta:
         ordering = ['title', 'original_text']
 
+    def authors(self):
+        return ", ".join([author.name for author in self.original_text.authors.all()])
+    
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.original_text.authors.all()])
         #return f'{self.id}: {self.title}({self.original_text.title}, {print_authors})'
