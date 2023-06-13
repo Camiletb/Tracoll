@@ -17,7 +17,7 @@ class Author(models.Model):
     name = models.CharField(max_length=100)
     
     class Meta:
-        ordering = ['name', 'type']
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -62,10 +62,12 @@ class Text(models.Model):
     content = models.TextField(max_length=2000)
     state = models.CharField(max_length=1, choices=state_choices, default=NOT_TRANSLATED)
 
-    author = models.ForeignKey(Author, blank=True, null = True, on_delete = models.SET_NULL)
-    #authors = models.ManyToManyField(Author, blank=True)
+    #author = models.ForeignKey(Author, blank=True, null = True, on_delete = models.SET_NULL)
+    authors = models.ManyToManyField(Author, blank=True)
     class Meta:
         ordering = ['title']
 
     def __str__(self):
-        return f'{self.title}, {self.author} [{self.state}]'
+        print_authors = ", ".join([author.name for author in self.authors.all()])
+        return f'{self.title}, {print_authors} [{self.state}]'
+        #return f'{self.title}, {self.author} [{self.state}]'

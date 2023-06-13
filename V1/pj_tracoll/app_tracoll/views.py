@@ -22,7 +22,9 @@ from django.views import generic
 
 class TextListView(generic.ListView):
      model = Text
+     paginate_by = 3
      
 class AuthorListView(generic.ListView):
      model = Author
+     paginate_by = 3
 
