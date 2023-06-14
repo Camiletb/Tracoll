@@ -29,3 +29,5 @@ urlpatterns += [ path('', RedirectView.as_view(url='app_tracoll/')), ]
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns += [ path('accounts/', include('django.contrib.auth.urls')), ]
