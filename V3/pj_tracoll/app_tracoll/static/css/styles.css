@@ -6,9 +6,22 @@ li {
     text-decoration-line: none;
     font-size: larger;
     font-weight: bolder;
-    color: brown;
+    color: lightblue;
 }
 
 .endpath {
-    color: steelblue;
+    color: lightblue;
+}
+
+.lightblue {
+    color: lightblue;
+}
+
+h3 {
+    margin-top: 25px;
+    padding: 25px;
+}
+
+.custom-success{
+    color:lightgreen;
 }

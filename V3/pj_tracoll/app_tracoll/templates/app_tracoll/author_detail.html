@@ -1,0 +1,32 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1 class="display-5 mb-5">Tracoll/Authors/<span class="endpath">{{ author.name }}</span></h1>
+    <h1 class="lightblue">Author</h1>
+    <div class=" card text-white bg-dark mt-5 mb-5 p-4 m-4"> <!-- Author-->
+        <div class="card-body" >
+            <h2 class="display-6">{{ author.name }}</h2>
+            <div style="margin-left:20px;margin-top:20px">
+                <p class="mb-1"><strong> Name: </strong> {{ author.name }}</p>
+                <p><strong> Type: </strong> {{ author.type }}</p>
+            </div>
+        </div>
+    </div>
+    <h1 class="lightblue">Works of {{ author.name }}</h1>
+    {% if author.text_set.all %}
+        {% for txt in author.text_set.all %}
+            <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Author-->
+                <div class="card-body" >
+                    <h2 class="display-6">{{ txt.title }} <span class="badge bg-secondary">{{txt.get_status_display}}</span></h2>
+                    <div style="margin-left:20px;margin-top:20px">
+
+                        <p><strong>Status: </strong>{{txt.get_status_display}} </p>
+                        <!-- <p>{{ txt.content }}</p> -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}   
+    {% else %}
+        <h6 class="text-warning">This Author have not works translated yet</h6>
+    {% endif %}
+{% endblock %}

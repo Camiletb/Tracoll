@@ -1,14 +1,14 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1 class="display-4 mb-5">Tracoll/<span class="endpath">Texts/</span></h1>
-  {% if text_list %}
-     <ul>
-       {% for text in text_list %}
-          <li> <b>{{ text.title }}</b> ({{text.authors.name}}) </li>
-       {% endfor %}
-     </ul>
-  {% else %}
-     <p>There are no texts in the site.</p>
-  {% endif %}
+   <h1 class="display-5 mb-5">Tracoll/<span class="endpath">Texts/</span></h1>
+   {% if text_list %}
+      <ul>
+         {% for text in text_list %}
+            <a href="{{ text.get_absolute_url }}"> {{ text.title }}</a>{% if text.author %},{% endif %} {{text.author}} <br>
+         {% endfor %}
+      </ul>
+   {% else %}
+      <p>There are no texts in the site.</p>
+   {% endif %}
 {% endblock %}

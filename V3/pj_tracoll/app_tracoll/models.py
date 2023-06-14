@@ -1,7 +1,10 @@
 from django.db import models
 
 # Create your models here.
+from django.urls import reverse
 
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Minor models >>>
 class TextType(models.Model):
     name = models.CharField(max_length=200, help_text="Enter the text typology: poem, song..." )
 
@@ -28,6 +31,10 @@ class Language(models.Model):
 
     def __str__(self):
         return self.name
+    
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AUTHOR >>>
+
+
 class Author(models.Model):
 
     POET = 'PO'
@@ -51,6 +58,10 @@ class Author(models.Model):
         return self.name
         #return f'{self.author_name}, {self.author_type}'
 
+    def get_absolute_url(self):
+        return reverse('author-detail', args=[str(self.id)])
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEXT >>>
 class Text(models.Model):
 
     POEM = 'PO'
@@ -59,11 +70,11 @@ class Text(models.Model):
     NOT_TRANSLATED = 'W'
     NOT_REVIEWED = 'L'
     REVIEWED_EDITABLE = 'E'
-    TOTALLY_TRANSLATED = 'W'
+    TOTALLY_TRANSLATED = 'V'
 
-    ES = 'ES'
-    FR = 'FR'
-    EN = 'EN'
+    #ES = 'ES'
+    #FR = 'FR'
+    #EN = 'EN'
     
     
     type_choices = [
@@ -71,26 +82,24 @@ class Text(models.Model):
         (SONG, 'Song'),
     ]
 
-    language_choices = [
-        (ES, 'ES'),
-        (FR, 'FR'),
-        (EN, 'EN'),
+    # language_choices = [
+    #     (ES, 'ES'),
+    #     (FR, 'FR'),
+    #     (EN, 'EN'),
+    # ]
+
+    status_choices = [
+        (NOT_TRANSLATED, 'Not translated'),
+        (NOT_REVIEWED, 'Translated & Not reviewed'),
+        (REVIEWED_EDITABLE, 'Reviewed & Editable'),
+        (TOTALLY_TRANSLATED, 'Translated'),
     ]
 
-    state_choices = [
-        (NOT_TRANSLATED, '(W) Not translated'),
-        (NOT_REVIEWED, '(L) Translated & Not reviewed'),
-        (REVIEWED_EDITABLE, ' (E) Reviewed & Editable'),
-        (TOTALLY_TRANSLATED, ' (V) Translated'),
-    ]
-
-    #type = models.CharField(max_length=2, choices=type_choices, default=SONG)
-    #language = models.CharField(max_length=2, choices=language_choices)
     type = models.ForeignKey(TextType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of text")
     language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the original language")
     title = models.CharField(max_length=100, help_text="Enter the title [Max. 100 letters]")
     content = models.TextField(max_length=2000, help_text="Enter the text you want translate [Max. 2000 letters]")
-    state = models.CharField(max_length=1, choices=state_choices, default=NOT_TRANSLATED, help_text="Enter the translation state")
+    status = models.CharField(max_length=1, choices=status_choices, default=NOT_TRANSLATED, help_text="Enter the translation status")
 
     #author = models.ForeignKey(Author, blank=True, null = True, on_delete = models.SET_NULL)
     authors = models.ManyToManyField(Author, blank=True)
@@ -103,8 +112,13 @@ class Text(models.Model):
 
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.authors.all()])
-        return f'{self.title}, {print_authors} [{self.state}]'
-        #return f'{self.title}, {self.author} [{self.state}]'
+        return f'{self.title}, {print_authors} [{self.status}]'
+        #return f'{self.title}, {self.author} [{self.status}]'
+
+    def get_absolute_url(self):
+        return reverse('text-detail', args=[str(self.id)])
+
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TRANSLATION >>>
 
 import uuid  # Required for unique book instances
 from datetime import date
@@ -122,6 +136,13 @@ class Translation(models.Model):
 
     def authors(self):
         return ", ".join([author.name for author in self.original_text.authors.all()])
+    
+    def original_title(self):
+        return ", ".join([self.original_text.title])
+    
+    def status(self):
+        return ", ".join([self.original_text.status])
+    
     
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.original_text.authors.all()])

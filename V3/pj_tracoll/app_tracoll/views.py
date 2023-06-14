@@ -20,11 +20,17 @@ def index(request):
 
 from django.views import generic
 
+# Para la paginación de las listas de textos y autores
 class TextListView(generic.ListView):
      model = Text
-     paginate_by = 3
+     paginate_by = 5
      
 class AuthorListView(generic.ListView):
      model = Author
-     paginate_by = 3
+     paginate_by = 5
 
+# Para las dáginas de detalles de textos y autores
+class TextDetailView(generic.DetailView):
+    model = Text
+class AuthorDetailView(generic.DetailView):
+    model = Author

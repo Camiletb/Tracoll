@@ -25,15 +25,15 @@ class AuthorAdmin(admin.ModelAdmin):
     ]
 
 class TextAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'language', 'state')
-    fields = ['title', 'content', 'authors', ('type', 'language'), 'state']
+    list_display = ('title', 'author', 'language', 'status')
+    fields = ['title', 'content', 'authors', ('type', 'language'), 'status']
     inlines = [
         TranslationInline,
     ]
 
 class TranslationAdmin(admin.ModelAdmin):
     
-    list_display = ('title','user_translator', 'original_text', 'authors')
+    list_display = ('title', 'original_title', 'authors', 'user_translator', 'status')
     # fieldsets = (
     #     ('Translation', {'fields': ('title', 'content')}),
     #     ('More info', {'fields': ('id')}),
