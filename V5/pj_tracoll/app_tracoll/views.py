@@ -72,3 +72,39 @@ class AllTranslatedTextsListView (generic.ListView):
 # def logout_view(request):
 #     logout(request)
 #     return redirect('')
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import permission_required
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.shortcuts import render, get_object_or_404
+from .models import Text
+from .forms import TranslationForm
+
+@login_required
+@permission_required('app_tracoll.all_texts', raise_exception = True)
+def edit_translation(request, text_id):
+    text = get_object_or_404(Text, id=text_id)
+    translation = text.get_translation()
+
+    if request.method == 'POST':
+        form = TranslationForm(request.POST, instance=translation)
+        if form.is_valid():
+            translation = form.save(commit=False)
+            translation.original_text = text
+            translation.user_translator = request.user
+            translation.save()
+
+            # Actualiza el estado del texto si no tenía traducción previa
+            if text.isnot_translated:
+                text.status = Text.NOT_REVIEWED
+                text.save()
+            # elif not text.is_marked_as_finished:
+            #     text.status = Text.NOT_REVIEWED
+            #     text.save()
+
+            return HttpResponseRedirect(reverse('texts'))  # Redirige a la lista de textos después de guardar
+
+    else:
+        form = TranslationForm(instance=translation)
+
+    return render(request, 'app_tracoll/edit_translation.html', {'form': form, 'text': text})

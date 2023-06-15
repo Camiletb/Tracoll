@@ -82,6 +82,9 @@ class Text(models.Model):
         #tengo que hacer estos getters para poder acceder a estas variables que no son propias cuando trabajo con los inlines
         return ", ".join([author.name for author in self.authors.all()])
 
+    def get_translation(self):
+        return self.translation_set.first()
+    
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.authors.all()])
         return f'{self.title}, {print_authors} [{self.status}]'

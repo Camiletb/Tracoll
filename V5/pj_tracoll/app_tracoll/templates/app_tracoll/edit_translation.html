@@ -1,0 +1,46 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+<div class=" card text-dark mt-3 p-4 m-4"> <!-- Form card -->
+    <div class="card-body" >
+        <h1>Title: {{ text.title }}</h1>
+        <p> Author: {{ text.author }}</p>
+        <p {% if text.isnot_translated %} class="text-danger"{% endif %}> {{ text.get_status_display }}</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Actualizar">
+        </form>
+            
+    </div>
+</div>
+    <h2>Traducciones:</h2>
+    <ul>
+        {% with translation=text.get_translation %}
+        {% if translation %}
+            <li>{{ translation.title }}</li>
+            <p><strong>Title</strong><br> {{ translation.title }}</p>
+            <p><strong>{{ text.type }}</strong> <br> {{ translation.content }}</p>
+            <p class="text-dark text-end">Translated by: {{ translation.user_translator }}</p>
+            <p class="text-muted"><strong>Id:</strong> {{ translation.id }}</p>
+        {% else %}
+            <h6 class="text-warning">This text hasn't been translated yet :(</h6>
+        {% endif %}
+        {% endwith %}
+        <!-- {% for translation in translations %}
+            <li>{{ text.translation.title }}</li>
+        {% endfor %}
+
+        {% if text.translation_set.all %}
+            {% for tradu in text.translation_set.all %}
+            
+                <p><strong>Title</strong><br> {{ tradu.title }}</p>
+                <p><strong>{{text.type}}</strong> <br> {{ tradu.content }}</p>
+                <p class="text-dark text-end">Translated by: {{ tradu.user_translator }}</p>
+                <p class="text-muted"><strong>Id:</strong> {{ tradu.id }}</p>
+            {% endfor %}
+        {% else %}
+            <h6 class="text-warning">This text haven't been translated yet :(</h6>
+        {% endif %} -->
+    </ul>
+{% endblock %}

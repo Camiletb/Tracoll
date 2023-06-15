@@ -5,7 +5,9 @@
    {% if text_list %}
       <ul>
          {% for text in text_list %}
-            <a href="{{ text.get_absolute_url }}"> {{ text.title }}</a>{% if text.author %},{% endif %} {{text.author}} <br>
+            <a href="{{ text.get_absolute_url }}"> {{ text.title }}</a>{% if text.author %},{% endif %} {{text.author}} 
+            <a href="{% url 'edit-translation' text_id=text.id %}">Traducir</a>
+            <br>
          {% endfor %}
       </ul>
    {% else %}
