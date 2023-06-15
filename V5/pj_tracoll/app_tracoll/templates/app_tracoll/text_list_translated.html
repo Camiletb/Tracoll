@@ -9,13 +9,15 @@
         </ol>
     </nav>
 
-    <h1 class="display-4">Translated texts</h1>
+    <h1 class="display-4 mt-5 mb-3">Translated texts</h1>
+    <br>
+
     {% if text_list %}
         <ul>
             {% for txt in text_list %}
                 <div class="card bg-dark my-card-dark">
                     <div class="card-body my-card-dark fs-5">
-                        <a href="{% url 'text-detail' txt.pk %}" class="text-link">{{ txt.title }} </a>{% if txt.author %} by {% endif %}<a href="{{ txt.authors.first.get_absolute_url }}" class="author-link">{{txt.author}}</a><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width: 60px;">{{txt.language}}</span> <span class="badge {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %} fs-5" style="position: absolute; right: 100px; top: 30px; width: 200px;">{{txt.get_status_display}}</span>
+                    <a href="{% url 'text-detail' txt.pk %}" class="text-link">{{ txt.title }} </a>{% if txt.author %} by {% endif %}<a href="{{ txt.authors.first.get_absolute_url }}" class="author-link">{{txt.author}}</a><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width: 60px;">{{txt.language}}</span> <span class="badge {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %} fs-5" style="position: absolute; right: 100px; top: 30px; width: 200px;">{{txt.get_status_display}}</span>
                         <br>
                     </div>
                 </div>

@@ -1,15 +1,31 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<h1 class="display-5 mb-5">Tracoll/<span class="endpath">Authors/</span></h1>
+
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item" ><a href="/app_tracoll" class="system-link">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Authors</li>
+        </ol>
+    </nav>
+
+    <h1 class="display-4 mt-5 mb-3">Authors</h1>
+    <br>
+
     {% if author_list %}
         <ul>
             {% for author in author_list %}
-                <!-- Django llama a las funciones sin parámetros sin paréntesis -->
-                <li><a href="{{ author.get_absolute_url }}"> {{ author.name }} ({{ author.type }})</a></li>
+                <div class="card bg-dark my-card-dark">
+                    <div class="card-body my-card-dark fs-5">
+                        <!-- Django llama a las funciones sin parámetros sin paréntesis -->
+                        <li><a href="{{ author.get_absolute_url }}"> {{ author.name }} </a>
+                            <br><span class="fs-5 mt-3">{{author.type}}</span></li>
+                    </div>
+                </div>
+                <br>
             {% endfor %}
         </ul>
     {% else %}
-        <p>There are no texts in the library.</p>
+        <p>There are no authors yet.</p>
     {% endif %}
 {% endblock %}
