@@ -47,7 +47,7 @@ class AuthorListView(generic.ListView):
 class TextDetailView(generic.DetailView):
     # login_url = '/accounts/login/'
     model = Text
-
+    
 class AuthorDetailView(generic.DetailView):
     #login_url = '/accounts/login/'
     model = Author
@@ -64,3 +64,11 @@ class AllTranslatedTextsListView (generic.ListView):
         all_l = Text.objects.filter(status__in=['L', 'E', 'V'])
         #all_l = Text.objects.filter(status__exact='V')
         return all_l.order_by('title')
+    
+
+# from django.contrib.auth import logout
+# from django.shortcuts import redirect
+
+# def logout_view(request):
+#     logout(request)
+#     return redirect('')

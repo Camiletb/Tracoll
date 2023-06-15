@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1 class="display-5 mb-5">Tracoll/Texts/<span class="endpath">{{ text.title }}</span></h1>
-
+<h3 class="display-5 lightblue">{{text.title}} by {{text.author}}</h3>
 <!-- <nav aria-label="breadcrumb" class="display-7 mb-5">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="#">Tracoll</a></li>
@@ -10,6 +10,7 @@
         <li class="breadcrumb-item active endpath" aria-current="page">{{ text.title }}</li>
     </ol>
 </nav> -->
+{% if perms.app_tracoll.all_texts or text.is_translated %}
 
 <div>
     <div class="container-fluid justify-content-center mb-5">
@@ -26,7 +27,8 @@
             <div class="card text-white bg-secondary mt-5 p-4 col-sm-5 bg-secondary m-4"> <!-- Translation-->
                 <div class="card-body" >
                     
-                    <h3><span class="{% if text.status != 'V' %}text-warning{% endif %}">{{ text.get_status_display }}</span></h3>
+                    <h3><span class="{% if text.isnot_translated %} text-warning {% else %} {% if text.is_marked_as_finished %}text-white {% elif text.is_editable %} text-dark {% endif %} {% endif %}">
+                                    {{ text.get_status_display }}</span></h3>
                     
                     <hr>
                     <div style="margin-left:20px;margin-top:20px">
@@ -49,9 +51,10 @@
     </div>
     <div style="margin: 0 auto;">
         
-        <div class="card text-white bg-dark mt-5 p-4 col-sm-12 m-5 border {% if text.status == 'V' %}border-success{% else %}border-secondary{% endif %}">
+        <!-- <div class="card text-white bg-dark mt-5 p-4 col-sm-12 m-5 border {% if text.is_marked_as_finished %}border-success{% elif text. %}border-warning{% endif %}"> -->
+        <div class="card text-white bg-dark mt-5 p-4 col-sm-12 m-5 border {% if text.isnot_reviewed %} border-warning {% else %} {% if text.is_marked_as_finished %}border-success {% else %} border-secondary {% endif %} {% endif %}">
             <div class="card-body" >
-                <h3 class="card-title">About "{{text.title}}" <span class="badge {% if text.status == 'V' %}bg-success{% else %}bg-warning{% endif %}">{{ text.get_status_display }}</span></h3>
+                <h3 class="card-title">About "{{text.title}}" <span class="badge {% if text.isnot_reviewed %} bg-warning {% elif text.is_marked_as_finished %} bg-success {% else %} bg-secondary {% endif %}">{{ text.get_status_display }}</span></h3>
                 <hr>
                 <p class="card-text mb-1"><strong> Original title: </strong> {{text.title}}</p>
                 <p class="card-text mb-1"><strong> Author: </strong> <a href="{{ text.authors.get_absolute_url }}"> {{ text.author }}</a></p>
@@ -72,4 +75,10 @@
         </div>
     </div>
 </div>
+{% else %}
+<h5>Nothing to see here...</h5>
+<p>Okay, you catch us...what can hide this misterious page called "{{text.title}}"? this is a super ultra secret page, if you want to see other ultra secret pages, join us to this ultra secret (and friendly) group, and help us to translate more songs and poems. You just need to log in :)</p>
+<li><a href="{% url 'login' %}?next={{ request.path }}" class="btn bg-warning fw-bold">Login</a></li>
+
+{% endif %}
 {% endblock %}

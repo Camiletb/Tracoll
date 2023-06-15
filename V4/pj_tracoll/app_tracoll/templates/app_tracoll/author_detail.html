@@ -15,8 +15,8 @@
     <h1 class="lightblue">Works of {{ author.name }}</h1>
     {% if author.text_set.all %}
         {% for txt in author.text_set.all %}
-            {% if txt.status != 'W' %}
-                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- All Works -->
+            {% if txt.is_translated %}
+                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Translated Works -->
                     <div class="card-body" >
                         <h2 class="display-6">{{ txt.title }} <span class="badge bg-secondary">{{txt.get_status_display}}</span></h2>
                         <div style="margin-left:20px;margin-top:20px">
@@ -28,8 +28,8 @@
                 </div>
             {% endif %}
             {% if perms.app_tracoll.all_texts %}
-                {% if txt.status == 'W' %}
-                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Translated Works -->
+                {% if txt.isnot_translated %}
+                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Not translated Works -->
                     <div class="card-body" >
                         <h2 class="display-6">{{ txt.title }} <span class="badge bg-secondary">{{txt.get_status_display}}</span></h2>
                         <div style="margin-left:20px;margin-top:20px">

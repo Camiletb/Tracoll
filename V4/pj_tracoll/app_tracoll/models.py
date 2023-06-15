@@ -60,9 +60,9 @@ class Text(models.Model):
 
     status_choices = [
         (NOT_TRANSLATED, 'Not translated'),
-        (NOT_REVIEWED, 'Translated & Not reviewed'),
-        (REVIEWED_EDITABLE, 'Reviewed & Editable'),
-        (TOTALLY_TRANSLATED, 'Translated'),
+        (NOT_REVIEWED, 'Translation not reviewed'),
+        (REVIEWED_EDITABLE, 'Translation reviewed (& editable)'),
+        (TOTALLY_TRANSLATED, 'Translation'),
     ]
 
     type     = models.ForeignKey(TextType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of text")
@@ -78,7 +78,7 @@ class Text(models.Model):
         permissions = (("is_translated", "Set text as translated"), 
                        ("all_texts", "Show texts translated and not translated"), )
 
-    def author(self): 
+    def author(self): #get author
         #tengo que hacer estos getters para poder acceder a estas variables que no son propias cuando trabajo con los inlines
         return ", ".join([author.name for author in self.authors.all()])
 
@@ -87,8 +87,33 @@ class Text(models.Model):
         return f'{self.title}, {print_authors} [{self.status}]'
         #return f'{self.title}, {self.author} [{self.status}]'
 
-    def get_absolute_url(self):
+    def get_absolute_url(self): #Para la página de detalles de cada texto
         return reverse('text-detail', args=[str(self.id)])
+    
+    @property
+    def is_translated(self):
+        return bool(self.status != 'W')
+    @property
+    def isnot_translated(self):
+        return bool(self.status == 'W')
+    @property
+    def is_editable(self):
+        return bool(self.status != 'V')
+    @property
+    def isnot_editable(self):
+        return bool(self.status == 'V')
+    @property
+    def is_marked_as_finished(self):
+        return bool(self.status == 'V')
+    @property
+    def isnot_marked_as_finished(self):
+        return bool(self.status == 'V')
+    @property
+    def is_reviewed(self):
+        return bool(self.status == 'E' or self.status == 'T')
+    @property
+    def isnot_reviewed(self):
+        return bool(self.status == 'W' or self.status == 'L')
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TRANSLATION >>>>>>>>>>>>>>>>>>>>>>>>>>
 

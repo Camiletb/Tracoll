@@ -29,8 +29,8 @@
                 <div class="col-sm-2 pt-5" style="background-color: #343a40; height: 100 vh; border: solid blue;"> <!-- Barra lateral -->
                     {% block sidebar %}
                         <ul id="index_menu" class="sidebar-nav">
-                            {% if user.is_authenticated %}
-                            <li class="lightblue">Hi! {{ user.get_username }} (<a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>)</li>
+                            
+                            <li class{% if user.is_authenticated %}="lightblue">Hi! {{ user.get_username }} (<a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>)</li>
                             {% else %}
                             <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
                             {% endif %}
