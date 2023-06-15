@@ -34,7 +34,7 @@ def index(request):
 class TextListView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     login_url = '/accounts/login/'
     model = Text
-    paginate_by = 10
+    paginate_by = 5
     permission_required = 'app_tracoll.all_texts'
 
 class AuthorListView(generic.ListView):

@@ -60,9 +60,9 @@ class Text(models.Model):
 
     status_choices = [
         (NOT_TRANSLATED, 'Not translated'),
-        (NOT_REVIEWED, 'Translation not reviewed'),
-        (REVIEWED_EDITABLE, 'Translation reviewed (& editable)'),
-        (TOTALLY_TRANSLATED, 'Translation'),
+        (NOT_REVIEWED, 'Not reviewed'),
+        (REVIEWED_EDITABLE, 'Editable'),
+        (TOTALLY_TRANSLATED, 'Translated'),
     ]
 
     type     = models.ForeignKey(TextType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of text")

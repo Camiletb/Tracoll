@@ -6,15 +6,17 @@ li {
     text-decoration-line: none;
     /* font-size: larger; */
     color: lightblue;
+    color: palevioletred;
 }
 li a {
     text-decoration-line: none;
     color: lightblue;
-
+    color: paleturquoise;
+    
 }
 
 li a:hover {
-    color: whitesmoke;
+    color:aliceblue;
 }
 #index_menu li a:hover {
     text-decoration-line: none;
@@ -25,11 +27,11 @@ li a:hover {
 .endpath {
     /* color: lightblue; */
     color: palevioletred;
-    color: palevioletred;
 }
 
 .lightblue {
     color: lightblue;
+    color: paleturquoise;
     /* color: palevioletred; */
 }
 
@@ -71,4 +73,47 @@ li a:hover {
 }
 .vh80 {
     height: 80vh;
+}
+.mylink {
+    text-decoration-line: none;
+    color: lightblue;
+}
+
+.mylink:hover{
+    color: aliceblue;
+}
+
+/* .my-card-dark {
+    background-color:#272930;
+} */
+
+.my-card-dark:hover {
+    /* background-color: #4f63e7; */
+    /* background-color:#343a60; */
+    /* background-color:#343a50; */
+    background-color:#272930;
+    background-color:#242629;
+    /* border: solid paleturquoise; */
+}
+
+.author-link{
+    color: palegreen;
+    text-decoration-line: none;
+}
+.author-link:hover{
+    color: lightgoldenrodyellow;
+}
+.system-link{
+    color: palevioletred;
+    text-decoration-line: none;
+}
+.system-link:hover{
+    color: whitesmoke;
+}
+.text-link{
+    color: paleturquoise;
+    text-decoration-line: none;
+}
+.text-link:hover{
+    color: aliceblue;
 }
