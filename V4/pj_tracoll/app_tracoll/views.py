@@ -14,8 +14,11 @@ def index(request):
     # Generate counts of some of the main objects
     num_texts   = Text.objects.all().count()
     num_authors = Author.objects.all().count()
-    num_visits  = request.visit_counter.get('/app_tracoll/', 0)
- 
+    num_visits  =  request.session.get('num_visits', 0)
+    num_visits = num_visits + 1
+    request.session['num_visits'] = num_visits
+    request.session.modified = True
+    
     ctx = {
         'num_texts': num_texts,
         'num_authors': num_authors,

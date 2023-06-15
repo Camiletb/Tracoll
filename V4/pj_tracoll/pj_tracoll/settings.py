@@ -48,7 +48,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pj_tracoll.middleware.VisitCounterMiddleware',
 ]
 
 ROOT_URLCONF = 'pj_tracoll.urls'
