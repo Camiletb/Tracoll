@@ -61,7 +61,7 @@ class Text(models.Model):
     status_choices = [
         (NOT_TRANSLATED, 'Not translated'),
         (NOT_REVIEWED, 'Not reviewed'),
-        (REVIEWED_EDITABLE, 'Editable'),
+        (REVIEWED_EDITABLE, 'Reviewed'), # (and editable)
         (TOTALLY_TRANSLATED, 'Translated'),
     ]
 

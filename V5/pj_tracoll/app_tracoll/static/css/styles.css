@@ -74,14 +74,6 @@ li a:hover {
 .vh80 {
     height: 80vh;
 }
-.mylink {
-    text-decoration-line: none;
-    color: lightblue;
-}
-
-.mylink:hover{
-    color: aliceblue;
-}
 
 /* .my-card-dark {
     background-color:#272930;

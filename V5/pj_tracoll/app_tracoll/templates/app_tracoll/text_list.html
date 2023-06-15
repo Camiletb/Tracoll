@@ -1,33 +1,33 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-   <!-- <h1 class="display-5 mb-5">Tracoll/<span class="endpath">Texts/</span></h1> -->
 
-   <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-      <ol class="breadcrumb">
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
         <li class="breadcrumb-item" ><a href="/app_tracoll" class="system-link">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">All Texts</li>
-      </ol>
+        </ol>
     </nav>
 
-   {% if text_list %}
-      <ul>
-         {% for text in text_list %}
-         <div class="card bg-dark my-card-dark">
-            <div class="card-body my-card-dark fs-5">
-                  <a href="{{ text.get_absolute_url }}" class="mylink"> {{ text.title }}</a>{% if text.author %},{% endif %} <a href="{{ text.authors.first.get_absolute_url }}" class="author-link">{{text.author}}</a><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px;">{{text.language}}</span> <span class="badge {% if text.isnot_translated %} bg-danger  {% else %} {% if text.is_marked_as_finished %} bg-success {% elif text.isnot_reviewed %} bg-warning {% else %} bg-secondary {% endif %}{% endif %} fs-5" style="position: absolute; right: 90px; top: 30px; width: 200px;">{{text.get_status_display}}</span>
-                  <br>
-               {% if text.is_marked_as_finished %}
-                  <button type="button" class="btn btn-secodary bg-secondary mt-3" style="width: 120px;" disabled>Not editable</button>
-               {% else %}
-                  <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Translate</a>
-               {% endif %}
-            </div>
-         </div>
-         <br>
-         {% endfor %}
-      </ul>
-   {% else %}
-      <p>There are no texts in the site.</p>
-   {% endif %}
+    <h1 class="display-4">All texts</h1>
+    {% if text_list %}
+        <ul>
+            {% for text in text_list %}
+                <div class="card bg-dark my-card-dark">
+                    <div class="card-body my-card-dark fs-5">
+                        <a href="{{ text.get_absolute_url }}" class="text-link"> {{ text.title }}</a> {% if text.author %} by {% endif %} <a href="{{ text.authors.first.get_absolute_url }}" class="author-link">{{text.author}}</a><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width:60px">{{text.language}}</span> <span class="badge {% if text.isnot_translated %} bg-danger  {% else %} {% if text.is_marked_as_finished %} bg-success {% elif text.isnot_reviewed %} bg-warning {% else %} bg-primary {% endif %}{% endif %} fs-5" style="position: absolute; right: 100px; top: 30px; width: 200px;">{{text.get_status_display}}</span>
+                        <br>
+                    {% if text.is_marked_as_finished %}
+                        <button type="button" class="btn btn-secodary bg-secondary mt-3" style="width: 120px;" disabled>Not editable</button>
+                    {% else %}
+                        <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Translate</a>
+                    {% endif %}
+                    </div>
+                </div>
+                <br>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no texts in the site.</p>
+    {% endif %}
 {% endblock %}
