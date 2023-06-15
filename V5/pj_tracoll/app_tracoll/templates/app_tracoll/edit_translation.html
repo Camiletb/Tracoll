@@ -1,7 +1,58 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<div class=" card text-dark mt-3 p-4 m-4"> <!-- Form card -->
+<h2>Translation of {{ text.title }}{% if text.author %} by {{ text.author }} {% else %} (Unknown Author) {% endif %}</h2>
+<div class="container-fluid justify-content-center mb-5"  style="border: solid purple;">
+    <div class="row d-flex justify-content-center h-100" style="margin: 0 auto; border: solid blue;">
+        <div class=" card text-light bg-dark mt-5 p-4 col-sm-5 m-4" style="border: solid green;"> <!-- Original-->
+            <div class="card-body" style="border: solid yellow;">
+                <h3>{{ text.title }}<br><span class="badge bg-secondary fs-6">{{ text.get_status_display }}</span></h3>
+                <p><strong> {{text.type}} </strong><br> {{ text.content }}</p>
+            </div>
+        </div>
+        <!-- <div class="col-sm-2"></div> -->
+        <div class="card text-light bg-dark mt-5 p-4 col-sm-5 bg-secondary m-4 h-100"> <!-- Form card -->
+            <div class="card-body h-100" >
+                {% with translation=text.get_translation %}
+                    {% if translation %}
+                        <h3>{{ translation.title }}</h3>
+                        {% if text.isnot_reviewed%}
+                        <span class="badge bg-warning fs-6">Actual title not reviewed</span>
+                        {% endif %}
+                    {% else %}
+                        <h3>{{ text.title }}</h3>
+                    {% endif %}
+                {% endwith %}
+
+                <form method="post" class="bg-dark">
+                    {% csrf_token %}
+                    <!-- {{ form.as_p }} -->
+                    {% for field in form %}
+                        <div class="form-group h-100">
+                        <label for="{{ field.id_for_label }}" class="form-label font-weight-bold">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.help_text %}
+                            <small class="form-text text-muted">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                        </div>
+                    {% endfor %}
+                    <input class=" form-control btn btn-primary mt-4" type="submit" value="Update">
+                </form>
+                    
+            </div>
+        </div>
+        <!-- <div class="col-sm-2"></div> -->
+    </div>
+</div>
+
+<!-- <div class=" card text-dark mt-3 p-4 m-4"> 
     <div class="card-body" >
         <h1>Title: {{ text.title }}</h1>
         <p> Author: {{ text.author }}</p>
@@ -13,8 +64,10 @@
         </form>
             
     </div>
-</div>
-    <h2>Traducciones:</h2>
+</div> -->
+<div class="card text-white bg-secondary mt-5 p-4 col-sm-5 bg-secondary m-4"> <!-- Form card -->
+    <div class="card-body" >
+        <h3>Last traducción</h3>
     <ul>
         {% with translation=text.get_translation %}
         {% if translation %}
@@ -27,20 +80,10 @@
             <h6 class="text-warning">This text hasn't been translated yet :(</h6>
         {% endif %}
         {% endwith %}
-        <!-- {% for translation in translations %}
-            <li>{{ text.translation.title }}</li>
-        {% endfor %}
 
-        {% if text.translation_set.all %}
-            {% for tradu in text.translation_set.all %}
-            
-                <p><strong>Title</strong><br> {{ tradu.title }}</p>
-                <p><strong>{{text.type}}</strong> <br> {{ tradu.content }}</p>
-                <p class="text-dark text-end">Translated by: {{ tradu.user_translator }}</p>
-                <p class="text-muted"><strong>Id:</strong> {{ tradu.id }}</p>
-            {% endfor %}
-        {% else %}
-            <h6 class="text-warning">This text haven't been translated yet :(</h6>
-        {% endif %} -->
     </ul>
+            
+    </div>
+</div>
+    
 {% endblock %}

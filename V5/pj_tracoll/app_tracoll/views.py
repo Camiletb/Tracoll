@@ -34,7 +34,7 @@ def index(request):
 class TextListView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     login_url = '/accounts/login/'
     model = Text
-    paginate_by = 5
+    paginate_by = 10
     permission_required = 'app_tracoll.all_texts'
 
 class AuthorListView(generic.ListView):
@@ -59,7 +59,7 @@ class AllTranslatedTextsListView (generic.ListView):
     model = Text
     # permission_required = 'app_tracoll.is_translated'
     template_name = 'app_tracoll/text_list_translated.html'
-    paginate_by = 3
+    paginate_by = 10
     def get_queryset(self):
         all_l = Text.objects.filter(status__in=['L', 'E', 'V'])
         #all_l = Text.objects.filter(status__exact='V')

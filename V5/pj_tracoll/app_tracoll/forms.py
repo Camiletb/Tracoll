@@ -19,6 +19,8 @@ from django import forms
 from .models import Translation
 
 class TranslationForm(forms.ModelForm):
+    title   = forms.CharField(label='Title', help_text='Maximum 100 characters', widget=forms.TextInput(attrs={'class': 'form-control text-light bg-dark', 'placeholder': 'Enter the translated title'}), max_length=100)
+    content = forms.CharField(label='Content', help_text='Maximum 2000 characters', widget=forms.Textarea(attrs={'class': 'form-control text-light bg-dark h-100', 'placeholder': 'Let\'s translate!'}), max_length=2000)
     class Meta:
-        model = Translation
+        model  = Translation
         fields = ['title', 'content']

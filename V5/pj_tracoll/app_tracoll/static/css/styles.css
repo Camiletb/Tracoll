@@ -4,17 +4,33 @@ li {
 
 #index_menu li a {
     text-decoration-line: none;
-    font-size: larger;
-    font-weight: bolder;
+    /* font-size: larger; */
     color: lightblue;
+}
+li a {
+    text-decoration-line: none;
+    color: lightblue;
+
+}
+
+li a:hover {
+    color: whitesmoke;
+}
+#index_menu li a:hover {
+    text-decoration-line: none;
+    /* font-size: larger; */
+    color: whitesmoke;
 }
 
 .endpath {
-    color: lightblue;
+    /* color: lightblue; */
+    color: palevioletred;
+    color: palevioletred;
 }
 
 .lightblue {
     color: lightblue;
+    /* color: palevioletred; */
 }
 
 /* h3 {
@@ -24,4 +40,35 @@ li {
 
 .custom-success{
     color:lightgreen;
+}
+
+.bg-grey800 {
+    background-color: #343a40;
+}
+
+.card-dark {
+    background-color: #1c1e21;
+    color: #fff;
+}
+
+.form-control{
+
+    background-color: #1c1e21;
+
+}
+.form-control:focus{
+
+    background-color: #25272a;
+    box-shadow: none;
+    color: #fff;
+    border-color: #4f63e7;
+}
+.font-weight-bold {
+    font-weight: bold;
+}
+.custom-textarea {
+    background-color: #343a40;
+}
+.vh80 {
+    height: 80vh;
 }
