@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Translated texts</h1>
+    {% if text_list %}
+        <ul>
+        {% for txt in text_list %}
+            <li><a href="{% url 'text-detail' txt.pk %}">{{ txt.title }} </a>({{ txt.get_status_display }})</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no translated texts.</p>
+    {% endif %}
+{% endblock %}

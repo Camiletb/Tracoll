@@ -2,9 +2,12 @@ from django.db import models
 
 # Create your models here.
 from django.urls import reverse
+import uuid  # Required for unique translations
+from datetime import date
+from django.contrib.auth.models import User  # Required to assign User as a translator
 
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Minor models >>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Minor models >>>>>>>>>>>>>>>>>>>>>>>>>>
 class TextType(models.Model):
     name = models.CharField(max_length=200, help_text="Enter the text typology: poem, song..." )
 
@@ -32,22 +35,9 @@ class Language(models.Model):
     def __str__(self):
         return self.name
     
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AUTHOR >>>
-
-
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AUTHOR >>>>>>>>>>>>>>>>>>>>>>>>>>
 class Author(models.Model):
 
-    POET = 'PO'
-    SINGER = 'SI'
-    BAND = 'BA'
-
-    type_choices = [
-        (POET, 'Poet'),
-        (SINGER, 'Singer'),
-        (BAND, 'Band'),
-    ]
-
-    #type = models.CharField(max_length=2, choices=type_choices, default=SINGER)
     type = models.ForeignKey(AuthorType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of author")
     name = models.CharField(max_length=100,  help_text="Enter the name of author")
     
@@ -56,37 +46,17 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
-        #return f'{self.author_name}, {self.author_type}'
 
     def get_absolute_url(self):
         return reverse('author-detail', args=[str(self.id)])
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEXT >>>
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEXT >>>>>>>>>>>>>>>>>>>>>>>>>>
 class Text(models.Model):
-
-    POEM = 'PO'
-    SONG = 'SO'
 
     NOT_TRANSLATED = 'W'
     NOT_REVIEWED = 'L'
     REVIEWED_EDITABLE = 'E'
     TOTALLY_TRANSLATED = 'V'
-
-    #ES = 'ES'
-    #FR = 'FR'
-    #EN = 'EN'
-    
-    
-    type_choices = [
-        (POEM, 'Poem'),
-        (SONG, 'Song'),
-    ]
-
-    # language_choices = [
-    #     (ES, 'ES'),
-    #     (FR, 'FR'),
-    #     (EN, 'EN'),
-    # ]
 
     status_choices = [
         (NOT_TRANSLATED, 'Not translated'),
@@ -95,16 +65,18 @@ class Text(models.Model):
         (TOTALLY_TRANSLATED, 'Translated'),
     ]
 
-    type = models.ForeignKey(TextType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of text")
+    type     = models.ForeignKey(TextType, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the type of text")
     language = models.ForeignKey(Language, on_delete=models.SET_NULL, null=True, blank=True, help_text="Enter the original language")
-    title = models.CharField(max_length=100, help_text="Enter the title [Max. 100 letters]")
-    content = models.TextField(max_length=2000, help_text="Enter the text you want translate [Max. 2000 letters]")
-    status = models.CharField(max_length=1, choices=status_choices, default=NOT_TRANSLATED, help_text="Enter the translation status")
+    title    = models.CharField(max_length=100, help_text="Enter the title [Max. 100 letters]")
+    content  = models.TextField(max_length=2000, help_text="Enter the text you want translate [Max. 2000 letters]")
+    status   = models.CharField(max_length=1, choices=status_choices, default=NOT_TRANSLATED, help_text="Enter the translation status")
+    authors  = models.ManyToManyField(Author, blank=True)
+    # author = models.ForeignKey(Author, blank=True, null = True, on_delete = models.SET_NULL)
 
-    #author = models.ForeignKey(Author, blank=True, null = True, on_delete = models.SET_NULL)
-    authors = models.ManyToManyField(Author, blank=True)
     class Meta:
         ordering = ['title']
+        permissions = (("is_translated", "Set text as translated"), 
+                       ("all_texts", "Show texts translated and not translated"), )
 
     def author(self): 
         #tengo que hacer estos getters para poder acceder a estas variables que no son propias cuando trabajo con los inlines
@@ -118,17 +90,13 @@ class Text(models.Model):
     def get_absolute_url(self):
         return reverse('text-detail', args=[str(self.id)])
 
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TRANSLATION >>>
-
-import uuid  # Required for unique book instances
-from datetime import date
-from django.contrib.auth.models import User  # Required to assign User as a borrower
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TRANSLATION >>>>>>>>>>>>>>>>>>>>>>>>>>
 
 class Translation(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this translation")
-    title = models.CharField(max_length=100)
-    content = models.TextField(max_length=2000)
-    original_text = models.ForeignKey(Text, on_delete=models.RESTRICT, null=True)
+    id              = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text="Unique ID for this translation")
+    title           = models.CharField(max_length=100)
+    content         = models.TextField(max_length=2000)
+    original_text   = models.ForeignKey(Text, on_delete=models.RESTRICT, null=True)
     user_translator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
@@ -146,6 +114,6 @@ class Translation(models.Model):
     
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.original_text.authors.all()])
-        #return f'{self.id}: {self.title}({self.original_text.title}, {print_authors})'
         return f'{self.title}, {print_authors} [from {self.original_text.language}]'
+        #return f'{self.id}: {self.title}({self.original_text.title}, {print_authors})'
          

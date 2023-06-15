@@ -28,7 +28,7 @@
             <div class="row" style="border: solid red; height: 80vh;">
                 <div class="col-sm-2 pt-5" style="background-color: #343a40; height: 100 vh; border: solid blue;"> <!-- Barra lateral -->
                     {% block sidebar %}
-                        <ul id="index_menu" class="sidebar-nav" style="border: solid lightgreen;">
+                        <ul id="index_menu" class="sidebar-nav">
                             {% if user.is_authenticated %}
                             <li class="lightblue">Hi! {{ user.get_username }} (<a href="{% url 'logout' %}?next={{ request.path }}">Logout</a>)</li>
                             {% else %}
@@ -36,15 +36,22 @@
                             {% endif %}
                             <hr>
                             <li class="mb-3 mt-3" style="border: solid red;"><a href="{% url 'index' %}">Home</a></li>
-                            <!-- <hr> -->
-                            <li class="mb-3" style="border: solid red;"><a href="{% url 'texts' %}">All texts</a></li>
-                            <!-- <hr> -->
-                            <li class="mb-3"><a href="{% url 'authors' %}">All authors</a></li>
-                            <!-- <hr> -->
+
+                            {% if perms.app_tracoll.all_texts %}
+                                <li class="mb-3" style="border: solid red;"><a href="{% url 'texts' %}">All texts</a></li>
+                            {% else %}
+                                <li><a href="{% url 'all-translated-texts' %}">Translated Texts</a></li>
+                            {% endif %}
+                            <li class="mb-3"><a href="{% url 'authors' %}" style="border: solid palegoldenrod">All authors</a></li>
+
+                            <hr>
 
                             
                             <div class="mb-5" style="position: absolute; bottom: 0; background-color: #343a40;">
                             </div>
+
+                            {% if perms.app_tracoll.is_translated %}
+                            {% endif %}
                         </ul>
                     {% endblock %}
                 </div>
