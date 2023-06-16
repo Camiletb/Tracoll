@@ -1,41 +1,88 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1 class="display-5 mb-5">Tracoll/Authors/<span class="endpath">{{ author.name }}</span></h1>
-    <h1 class="lightblue">Author</h1>
+
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item" >Tracoll</li>
+        <li class="breadcrumb-item" ><a href="/app_tracoll" class="system-link">Home</a></li>
+        <li class="breadcrumb-item" ><a href="/app_tracoll/authors" class="system-link">Authors</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{author.name}}</li>
+        </ol>
+    </nav>
+    
+    <h1 class="display-4 mt-5 mb-3">{{ author.name }}</h1>
+    <!-- <h1 class="lightblue">Author</h1> -->
     <div class=" card text-white bg-dark mt-5 mb-5 p-4 m-4"> <!-- Author -->
         <div class="card-body" >
-            <h2 class="display-6">{{ author.name }}</h2>
+            <h2 class="display-6 fs-2" style="color: palegreen;">About the artist</h2>
             <div style="margin-left:20px;margin-top:20px">
-                <p class="mb-1"><strong> Name: </strong> {{ author.name }}</p>
-                <p><strong> Type: </strong> {{ author.type }}</p>
+                <p class="mb-1 fs-5"><strong> Name: </strong> {{ author.name }}</p>
+                <p class="mb-1 fs-5"><strong> Type: </strong> {{ author.type }}</p>
+                <p class="mb-1 fs-5"><strong> Translated texts: </strong> {{ author.translated_texts }}</p>
             </div>
         </div>
     </div>
-    <h1 class="lightblue">Works of {{ author.name }}</h1>
+    <h1 class="display-4 mt-5 mb-3">Works</h1>
     {% if author.text_set.all %}
         {% for txt in author.text_set.all %}
             {% if txt.is_translated %}
-                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Translated Works -->
-                    <div class="card-body" >
-                        <h2 class="display-6">{{ txt.title }} <span class="badge bg-secondary">{{txt.get_status_display}}</span></h2>
-                        <div style="margin-left:20px;margin-top:20px">
-                            
-                            <p><strong>Status: </strong>{{txt.get_status_display}} </p>
-                            <!-- <p>{{ txt.content }}</p> -->
-                        </div>
+            <div class="card text-white bg-dark mt-3 m-4 my-card-dark ">  <!-- Translated Works -->
+                <div class="card-body my-card-dark p-4 fs-5 " >
+                    <h2 class="display-6 fs-2"><a href="{% url 'text-detail' pk=txt.pk %}" class="text-link">{{ txt.title }}</a></h2>
+                    
+                    <div class="">
+                        
+                        <p><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px;">{{txt.type}}</span></p>
+                        <!-- <p>{{ txt.content }}</p> -->
+                        <span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width:60px">{{txt.language}}</span> 
+                        <span class="badge {% if txt.isnot_translated %} bg-danger {% else %} {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %}{% endif %} fs-5" style="position: absolute; right: 104px; top: 30px; width: 200px;">{{txt.get_status_display}}</span>
+                    
+                        {% if perms.app_tracoll.all_texts %}
+                            {% if txt.is_marked_as_finished  %}
+                                {% if user.is_staff %}
+                                    <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Edit</a>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary" style="width: 120px;" disabled>Not editable</button>
+                                {% endif %}                            {% elif txt.isnot_reviewed %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Review</a>
+                            {% elif txt.is_reviewed %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Edit</a>
+                            {% else %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Translate</a>
+                            {% endif %}
+                        {% endif%}
                     </div>
                 </div>
+            </div>
+                
             {% endif %}
             {% if perms.app_tracoll.all_texts %}
                 {% if txt.isnot_translated %}
-                <div class=" card text-white bg-dark mt-3 p-4 m-4"> <!-- Not translated Works -->
-                    <div class="card-body" >
-                        <h2 class="display-6">{{ txt.title }} <span class="badge bg-secondary">{{txt.get_status_display}}</span></h2>
-                        <div style="margin-left:20px;margin-top:20px">
+                <div class="card text-white bg-dark mt-3 m-4 my-card-dark ">  <!-- Not translated Works -->
+                    <div class="card-body my-card-dark p-4 fs-5 " >
+                        <h2 class="display-6 fs-2"><a href="{% url 'text-detail' pk=txt.pk %}" class="text-link">{{ txt.title }}</a></h2>
+                        
+                        <div class="">
                             
-                            <p><strong>Status: </strong>{{txt.get_status_display}} </p>
+                            <p><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px;">{{txt.type}}</span></p>
                             <!-- <p>{{ txt.content }}</p> -->
+                            <span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width:60px">{{txt.language}}</span> 
+                            <span class="badge {% if txt.isnot_translated %} bg-danger {% else %} {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %}{% endif %} fs-5" style="position: absolute; right: 104px; top: 30px; width: 200px;">{{txt.get_status_display}}</span>
+                            {% if txt.is_marked_as_finished  %}
+                                {% if user.is_staff %}
+                                    <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Edit</a>
+                                {% else %}
+                                    <button type="button" class="btn btn-secondary" style="width: 120px;" disabled>Not editable</button>
+                                {% endif %}
+                            
+                            {% elif txt.isnot_reviewed %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Review</a>
+                            {% elif txt.is_reviewed %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Edit</a>
+                            {% else %}
+                                <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Translate</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

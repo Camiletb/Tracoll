@@ -80,12 +80,8 @@ li a:hover {
 } */
 
 .my-card-dark:hover {
-    /* background-color: #4f63e7; */
-    /* background-color:#343a60; */
-    /* background-color:#343a50; */
-    background-color:#272930;
-    background-color:#242629;
-    /* border: solid paleturquoise; */
+    background-color:#242930;
+    
 }
 
 .author-link{

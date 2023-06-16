@@ -11,13 +11,13 @@
     <div class="container-fluid justify-content-center">
         <div class=" container-fluid text-center mb-5">
 
-            <h1 class="display-4" style="color:palevioletred"><strong>Welcome to Tracoll</strong></h1>
-            <h2 class="display-6">The collaborative translator</h2>
+            <!-- <h1 class="display-4" style="color:palevioletred"><strong>Welcome to Tracoll</strong></h1> -->
+            <h2 class="display-6">In this collaborative translator you can find translations of songs and poems to the italian</h2>
         </div>
         <div class=" col-4 mt-5" style="margin: 0 auto;">
             <div class="card bg-dark">
                 <div class="card-body">
-                    <h5 class="card-title">Currently, this site holds</h5>
+                    <h5 class="card-title mb-4">Currently, this site holds</h5>
                     <ul>
                         {% if perms.app_tracoll.all_texts %}
                             <li> <a href="{% if perms.app_tracoll.all_texts %} /app_tracoll/texts {% else %} /app_tracoll/translated_texts {% endif %}">  <span class="text-link"><strong>All the texts</strong></span></a><span style="position: absolute; right: 60px;">{{ num_texts }}</span>  </li>

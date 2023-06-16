@@ -81,6 +81,7 @@ from django.urls import reverse
 from django.shortcuts import render, get_object_or_404
 from .models import Text
 from .forms import TranslationForm
+from urllib.parse import urljoin
 
 @login_required
 @permission_required('app_tracoll.all_texts', raise_exception = True)
@@ -100,13 +101,22 @@ def edit_translation(request, text_id):
             if text.isnot_translated:
                 text.status = Text.NOT_REVIEWED
                 text.save()
-            # elif not text.is_marked_as_finished:
-            #     text.status = Text.NOT_REVIEWED
-            #     text.save()
+            elif text.isnot_reviewed:
+                text.status = Text.REVIEWED_EDITABLE
+                text.save()
 
-            return HttpResponseRedirect(reverse('texts'))  # Redirige a la lista de textos después de guardar
+            #return HttpResponseRedirect(reverse('texts'))  # Redirige a la lista de textos después de guardar
+            # Obtener la URL padre
+            parent_url = request.session.get('previous_url')
+            if parent_url:
+                del request.session['previous_url']
+
+            return HttpResponseRedirect(parent_url or reverse('texts'))
 
     else:
         form = TranslationForm(instance=translation)
+
+    #Guardar la URL actual en la sesión
+    request.session['previous_url'] = request.META.get('HTTP_REFERER')
 
     return render(request, 'app_tracoll/edit_translation.html', {'form': form, 'text': text})

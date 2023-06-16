@@ -18,32 +18,34 @@
     <div class="container-fluid">
         <div class="container-fluid justify-content-center mb-5">
             <div class="row justify-content-center" style="margin: 0 auto;">
-                <div class=" card text-white bg-dark mt-5 p-4 col-sm-5 m-4"> <!-- Original-->
-                    <div class="card-body" >
+                <div class=" card text-white bg-dark mt-5 col-sm-5 m-4"> <!-- Original-->
+                    <div class="card-body p-4" >
                         <h3>Original</h3>
                         <hr>
-                        <p><strong> Title</strong><br> {{ text.title }}</p>
-                        <p><strong> {{text.type}} </strong><br> {{ text.content }}</p>
+                        <div>
+
+                            <p><strong> Title</strong><br> {{ text.title }}</p>
+                            <p><strong> {{text.type}} </strong><br> {{ text.content|linebreaksbr }}</p>
+                        </div>
                     </div>
                 </div>  <!-- Fin Original -->
-                <div class="card text-white bg-secondary mt-5 p-4 col-sm-5  bg-secondary m-4"> <!-- Translation-->
-                    <div class="card-body" >
+                <div class="card text-dark mt-5 col-sm-5 m-4" style="background-color: #dee2e6;"> <!-- Translation-->
+                    <div class="card-body p-4 text-dark" style="background-color: #dee2e6;">
                         
-                        <h3><span class="{% if text.isnot_translated %} text-warning {% else %} {% if text.is_marked_as_finished %}text-white {% elif text.is_editable %} text-dark {% endif %} {% endif %}">
+                        <h3><span class="{% if text.isnot_translated %} text-danger {% else %} {% if text.is_marked_as_finished %}text-dark {% elif text.is_editable %} text-dark {% endif %} {% endif %}">
                                         {{ text.get_status_display }}</span></h3>
                         
                         <hr>
-                        <div style="margin-left:20px;margin-top:20px">
+                        <div>
                             {% if text.translation_set.all %}
                                 {% for tradu in text.translation_set.all %}
-                                
-                                <p><strong>Title</strong><br> {{ tradu.title }}</p>
-                                <p><strong>{{text.type}}</strong> <br> {{ tradu.content }}</p>
-                                <p class="text-dark text-end">Translated by: {{ tradu.user_translator }}</p>
-                                <p class="text-muted"><strong>Id:</strong> {{ tradu.id }}</p>
+                                    <p><strong>Title</strong><br> {{ tradu.title }}</p>
+                                    <p><strong>{{text.type}}</strong> <br> {{ tradu.content|linebreaksbr }}</p>
+                                    <p class="text-muted text-end">Translated by: {{ tradu.user_translator }}</p>
+                                    <p class="text-muted"><strong>Id:</strong> {{ tradu.id }}</p>
                                 {% endfor %}
                             {% else %}
-                            <h6 class="text-warning">This text haven't been translated yet :(</h6>
+                            <span class="badge bg-warning fs-5">Haven't been translated yet :(</span>
                             {% endif %}
                         </div>
                     </div>

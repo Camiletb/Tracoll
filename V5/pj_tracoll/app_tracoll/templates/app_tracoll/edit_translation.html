@@ -2,12 +2,12 @@
 
 {% block content %}
 <h2>Translation of {{ text.title }}{% if text.author %} by {{ text.author }} {% else %} (Unknown Author) {% endif %}</h2>
-<div class="container-fluid justify-content-center mb-5"  style="border: solid purple;">
-    <div class="row d-flex justify-content-center h-100" style="margin: 0 auto; border: solid blue;">
-        <div class=" card text-light bg-dark mt-5 p-4 col-sm-5 m-4" style="border: solid green;"> <!-- Original-->
-            <div class="card-body" style="border: solid yellow;">
+<div class="container-fluid justify-content-center mb-5">
+    <div class="row d-flex justify-content-center h-100">
+        <div class=" card text-light bg-dark mt-5 p-4 col-sm-5 m-4"> <!-- Original-->
+            <div class="card-body">
                 <h3>{{ text.title }}<br><span class="badge bg-secondary fs-6">{{ text.get_status_display }}</span></h3>
-                <p><strong> {{text.type}} </strong><br> {{ text.content }}</p>
+                <p><strong> {{text.type}} </strong><br> {{ text.content|linebreaksbr }}</p>
             </div>
         </div>
         <!-- <div class="col-sm-2"></div> -->
@@ -16,11 +16,8 @@
                 {% with translation=text.get_translation %}
                     {% if translation %}
                         <h3>{{ translation.title }}</h3>
-                        {% if text.isnot_reviewed%}
-                        <span class="badge bg-warning fs-6">Actual title not reviewed</span>
-                        {% endif %}
                     {% else %}
-                        <h3>{{ text.title }}</h3>
+                        <h3>Title not translated yet</h3>
                     {% endif %}
                 {% endwith %}
 
@@ -48,42 +45,27 @@
                     
             </div>
         </div>
-        <!-- <div class="col-sm-2"></div> -->
     </div>
 </div>
 
-<!-- <div class=" card text-dark mt-3 p-4 m-4"> 
-    <div class="card-body" >
-        <h1>Title: {{ text.title }}</h1>
-        <p> Author: {{ text.author }}</p>
-        <p {% if text.isnot_translated %} class="text-danger"{% endif %}> {{ text.get_status_display }}</p>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Actualizar">
-        </form>
+{% if translation %}
+    <div class="card text-white bg-secondary mt-5 p-4 col-sm-5 bg-secondary m-4"> <!-- Form card -->
+        <div class="card-body" >
+            <h3>Last translation</h3>
+            <ul>
+                {% with translation=text.get_translation %}
+                    <li>{{ translation.title }}</li>
+                    <p><strong>Title</strong><br> {{ translation.title }}</p>
+                    <p><strong>{{ text.type }}</strong> <br> {{ translation.content|linebreaksbr }}</p>
+                    <p class="text-dark text-end">Translated by: {{ translation.user_translator }}</p>
+                    <p class="text-muted"><strong>Id:</strong> {{ translation.id }}</p>
             
+                {% endwith %}
+            </ul>
+        </div>
     </div>
-</div> -->
-<div class="card text-white bg-secondary mt-5 p-4 col-sm-5 bg-secondary m-4"> <!-- Form card -->
-    <div class="card-body" >
-        <h3>Last traducción</h3>
-    <ul>
-        {% with translation=text.get_translation %}
-        {% if translation %}
-            <li>{{ translation.title }}</li>
-            <p><strong>Title</strong><br> {{ translation.title }}</p>
-            <p><strong>{{ text.type }}</strong> <br> {{ translation.content }}</p>
-            <p class="text-dark text-end">Translated by: {{ translation.user_translator }}</p>
-            <p class="text-muted"><strong>Id:</strong> {{ translation.id }}</p>
-        {% else %}
-            <h6 class="text-warning">This text hasn't been translated yet :(</h6>
-        {% endif %}
-        {% endwith %}
+{% endif %}
 
-    </ul>
             
-    </div>
-</div>
     
 {% endblock %}

@@ -25,8 +25,16 @@
                         <span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width:60px">{{text.language}}</span> 
                         <span class="badge {% if text.isnot_translated %} bg-danger  {% else %} {% if text.is_marked_as_finished %} bg-success {% elif text.isnot_reviewed %} bg-warning {% else %} bg-primary {% endif %}{% endif %} fs-5" style="position: absolute; right: 100px; top: 30px; width: 200px;">{{text.get_status_display}}</span>
                         <br>
-                        {% if text.is_marked_as_finished %}
-                            <button type="button" class="btn btn-secodary bg-secondary mt-3" style="width: 120px;" disabled>Not editable</button>
+                        {% if text.is_marked_as_finished  %}
+                            {% if user.is_staff %}
+                                <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Edit</a>
+                            {% else %}
+                                <button type="button" class="btn btn-secondary mt-3" style="width: 120px;" disabled>Not editable</button>
+                            {% endif %}
+                        {% elif text.isnot_reviewed %}
+                        <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Review</a>
+                        {% elif text.is_reviewed %}
+                        <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Edit</a>
                         {% else %}
                             <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Translate</a>
                         {% endif %}

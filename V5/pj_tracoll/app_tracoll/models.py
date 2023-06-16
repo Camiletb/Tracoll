@@ -72,7 +72,7 @@ class Text(models.Model):
     status_choices = [
         (NOT_TRANSLATED, 'Not translated'),
         (NOT_REVIEWED, 'Not reviewed'),
-        (REVIEWED_EDITABLE, 'Reviewed'), # (and editable)
+        (REVIEWED_EDITABLE, 'Editable'), # (and editable)
         (TOTALLY_TRANSLATED, 'Translated'),
     ]
 
@@ -99,7 +99,6 @@ class Text(models.Model):
     def __str__(self):
         print_authors = ", ".join([author.name for author in self.authors.all()])
         return f'{self.title}, {print_authors} [{self.status}]'
-        #return f'{self.title}, {self.author} [{self.status}]'
 
     # def get_absolute_url(self): #Para la página de detalles de cada texto
     #     return reverse('text-detail', args=[str(self.id)])
@@ -130,10 +129,10 @@ class Text(models.Model):
         return bool(self.status == 'V')
     @property
     def is_reviewed(self):
-        return bool(self.status == 'E' or self.status == 'T')
+        return bool(self.status == 'E')
     @property
     def isnot_reviewed(self):
-        return bool(self.status == 'W' or self.status == 'L')
+        return bool(self.status == 'L')
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TRANSLATION >>>>>>>>>>>>>>>>>>>>>>>>>>
 
