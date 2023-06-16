@@ -18,7 +18,7 @@ class TranslationInline (admin.TabularInline): # Para a√±adir este campo a la p√
 
 #Admin classes
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type')
+    list_display = ('name', 'type', 'translated_texts', 'total_texts')
     fields = ['name', 'type']
     inlines = [
         TextsInline,

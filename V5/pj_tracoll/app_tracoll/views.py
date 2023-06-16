@@ -13,6 +13,7 @@ def index(request):
 
     # Generate counts of some of the main objects
     num_texts   = Text.objects.all().count()
+    num_trans = Text.objects.all().filter(status__in=['L', 'E', 'V']).count()
     num_authors = Author.objects.all().count()
     num_visits  =  request.session.get('num_visits', 0)
     num_visits = num_visits + 1
@@ -21,6 +22,7 @@ def index(request):
     
     ctx = {
         'num_texts': num_texts,
+        'num_trans': num_trans,
         'num_authors': num_authors,
         'num_visits': num_visits,
 	}

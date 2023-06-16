@@ -19,7 +19,10 @@
                 <div class="card-body">
                     <h5 class="card-title">Currently, this site holds</h5>
                     <ul>
-                        <li> <a href="{% if perms.app_tracoll.all_texts %} /app_tracoll/texts {% else %} /app_tracoll/translated_texts {% endif %}">  <span class="text-link"><strong>Texts</strong></span></a><span style="position: absolute; right: 60px;">{{ num_texts }}</span>  </li>
+                        {% if perms.app_tracoll.all_texts %}
+                            <li> <a href="{% if perms.app_tracoll.all_texts %} /app_tracoll/texts {% else %} /app_tracoll/translated_texts {% endif %}">  <span class="text-link"><strong>All the texts</strong></span></a><span style="position: absolute; right: 60px;">{{ num_texts }}</span>  </li>
+                        {% endif %}
+                        <li> <a href="/app_tracoll/translated_texts">  <span class="text-link"><strong>Translated texts</strong></span></a><span style="position: absolute; right: 60px;">{{ num_trans }}</span>  </li>
                         <li> <a href="/app_tracoll/authors">  <span class="author-link"><strong>Authors</strong> </span></a><span style="position: absolute; right: 60px;">{{ num_authors }}</span></li>
                         <li> <a href="/app_tracoll">  <span class="system-link"><strong>Visits</strong> </span></a><span style="position: absolute; right: 60px;">{{ num_visits }}</span></li>
                     </ul>

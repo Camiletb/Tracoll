@@ -49,6 +49,17 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         return reverse('author-detail', args=[str(self.id)])
+    
+    def texts(self):
+        return self.text_set.all()
+    
+    def total_texts(self):
+        return self.text_set.all().count()
+    
+    def translated_texts(self):
+        tr = self.text_set.all()
+        all_t = tr.filter(status__in=['L', 'E', 'V'])
+        return all_t.count()
 
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> TEXT >>>>>>>>>>>>>>>>>>>>>>>>>>
 class Text(models.Model):
