@@ -38,6 +38,24 @@
                         {% else %}
                             <a href="{% url 'edit-translation' text_id=text.id %}" class="btn btn-primary mt-3"  style="width: 120px;">Translate</a>
                         {% endif %}
+
+
+
+                        {% if user.is_staff %}
+                            {% if perms.catalog.can_mark_returned %}
+                                {% if text.status != 'V' %}
+
+                                <span id="span-{{ text.id }}">
+                                    <!-- AJAX DOESN'T WORK TO ME -->
+                                    <!-- <button class="btn btn-primary" onclick="setAsFinished('{{ text.id }}')">Mark as finished</button> -->
+                                </span>
+                                
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
+
+
                     </div>
                 </div>
                 <br>

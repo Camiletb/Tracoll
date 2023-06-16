@@ -36,7 +36,7 @@
                         <p><span class="badge bg-secondary fs-5" style="position: absolute; right: 30px;">{{txt.type}}</span></p>
                         <!-- <p>{{ txt.content }}</p> -->
                         <span class="badge bg-secondary fs-5" style="position: absolute; right: 30px; top: 30px; width:60px">{{txt.language}}</span> 
-                        <span class="badge {% if txt.isnot_translated %} bg-danger {% else %} {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %}{% endif %} fs-5" style="position: absolute; right: 104px; top: 30px; width: 200px;">{{txt.get_status_display}}</span>
+                        <span class="badge {% if perms.app_tracoll.all_texts %} {% if txt.isnot_translated %} bg-danger {% else %} {% if txt.is_marked_as_finished %} bg-success {% elif txt.isnot_reviewed %} bg-secondary {% else %} bg-primary {% endif %}{% endif %} {% else %} bg-secondary {% endif %} fs-5" style="position: absolute; right: 104px; top: 30px; width: 200px;">{% if perms.app_tracoll.all_texts %}{{txt.get_status_display}}{% else %}Translated{% endif %}</span>
                     
                         {% if perms.app_tracoll.all_texts %}
                             {% if txt.is_marked_as_finished  %}
@@ -51,6 +51,8 @@
                             {% else %}
                                 <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Translate</a>
                             {% endif %}
+
+
                         {% endif%}
                     </div>
                 </div>
@@ -83,6 +85,9 @@
                             {% else %}
                                 <a href="{% url 'edit-translation' text_id=txt.id %}" class="btn btn-primary"  style="width: 120px;">Translate</a>
                             {% endif %}
+
+
+
                         </div>
                     </div>
                 </div>

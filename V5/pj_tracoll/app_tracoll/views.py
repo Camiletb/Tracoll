@@ -120,3 +120,20 @@ def edit_translation(request, text_id):
     request.session['previous_url'] = request.META.get('HTTP_REFERER')
 
     return render(request, 'app_tracoll/edit_translation.html', {'form': form, 'text': text})
+
+
+# from django.http import JsonResponse
+
+# def set_text_as_finished(request, pk):
+#     text = get_object_or_404(Text, pk=pk)
+#     text.status = 'V'
+#     text.save()
+
+#     response_data = {
+#         'outcome': 'OK',
+#         'new_status': 'TOTALLY_TRANSLATED',
+#         'new_style': 'text-success',
+#         'new_button': ''
+#     }
+    
+#     return JsonResponse(response_data)
