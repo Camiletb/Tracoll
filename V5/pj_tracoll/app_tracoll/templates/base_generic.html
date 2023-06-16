@@ -30,7 +30,7 @@
                     {% block sidebar %}
                         <ul id="index_menu" class="sidebar-nav fs-4" style="color: whitesmoke;">
                             
-                            <li class{% if user.is_authenticated %}="">Hi! {{ user.get_username }} <br><a href="{% url 'logout' %}?next={{ request.path }}" class="fs-5 mb-5" style="margin-bottom: 300px">Logout</a></li>
+                            <li {% if user.is_authenticated %}>Hi! {{ user.get_username }} <br><a href="{% url 'logout' %}?next={{ request.path }}" class="fs-5 mb-5" style="margin-bottom: 300px">Logout</a></li>
                             <!-- <hr> -->
                             {% else %}
                             <li><a href="{% url 'login' %}?next={{ request.path }}">Login</a></li>

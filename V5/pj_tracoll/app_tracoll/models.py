@@ -90,8 +90,14 @@ class Text(models.Model):
         return f'{self.title}, {print_authors} [{self.status}]'
         #return f'{self.title}, {self.author} [{self.status}]'
 
-    def get_absolute_url(self): #Para la página de detalles de cada texto
-        return reverse('text-detail', args=[str(self.id)])
+    # def get_absolute_url(self): #Para la página de detalles de cada texto
+    #     return reverse('text-detail', args=[str(self.id)])
+    
+    # def get_absolute_url(self):
+    #     return reverse('author-detail', args=[str(self.pk)])
+    
+    def get_absolute_url(self):
+        return reverse('author-detail', kwargs={'pk': self.pk})
     
     @property
     def is_translated(self):
